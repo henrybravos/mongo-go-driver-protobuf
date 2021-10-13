@@ -81,7 +81,7 @@ func (e *timestampCodec) EncodeValue(ectx bsoncodec.EncodeContext, vw bsonrw.Val
 	if err != nil {
 		return err
 	}
-	return enc.EncodeValue(ectx, vw, reflect.ValueOf(t.In(time.UTC)))
+	return enc.EncodeValue(ectx, vw, reflect.ValueOf(t.In(time.UTC).Local()))
 }
 
 // DecodeValue decodes BSON value to Timestamp value
@@ -94,7 +94,7 @@ func (e *timestampCodec) DecodeValue(ectx bsoncodec.DecodeContext, vr bsonrw.Val
 	if err = enc.DecodeValue(ectx, vr, reflect.ValueOf(&t).Elem()); err != nil {
 		return err
 	}
-	ts, err := ptypes.TimestampProto(t.In(time.UTC))
+	ts, err := ptypes.TimestampProto(t.In(time.UTC).Local())
 	if err != nil {
 		return err
 	}
